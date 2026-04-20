@@ -1,4 +1,4 @@
-.PHONY: venv install setup init-env auth run clean docker-build docker-run deploy
+.PHONY: venv install setup init-env auth run clean docker-build docker-run deploy destroy
 
 # 專案設定
 IMAGE_NAME = google-adk-agent-template
@@ -64,6 +64,17 @@ deploy:
 		--port=$(PORT) \
 		--with_ui \
 		gemini_agent
+
+# 刪除 Google Cloud Run 服務
+destroy:
+	@if [ -z "$(PROJECT)" ]; then \
+		echo "請指定 GCP 專案 ID，例如：make destroy PROJECT=your-project-id"; \
+		exit 1; \
+	fi
+	gcloud run services delete $(IMAGE_NAME) \
+		--project=$(PROJECT) \
+		--region=$(REGION) \
+		--quiet
 
 # 清理快取檔案
 clean:

@@ -192,6 +192,14 @@ Service URL: https://google-adk-agent-template-xxxxxx-uc.a.run.app
 
 在瀏覽器開啟該網址，即可從公開網路存取你的 Agent。
 
+### 7-4. （選用）刪除 Cloud Run 服務
+
+Workshop 結束後，若不再需要該服務，可執行以下指令刪除，避免產生額外費用：
+
+```bash
+make destroy PROJECT=your-project-id
+```
+
 ---
 
 ## 常見問題
