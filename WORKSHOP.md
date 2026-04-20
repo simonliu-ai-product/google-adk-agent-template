@@ -96,9 +96,24 @@ make run
 
 ---
 
-## Step 5：加入你自己的 Agent 工具 (Tools)
+## Step 5：自訂 Agent 行為與工具 (Tools)
 
-### 5-1. 在 `tools/` 資料夾新增工具函式
+### 5-1. 修改 Agent 的角色指令
+
+編輯 `gemini_agent/instruction/system.md`，定義你的 Agent 角色與能力：
+
+```markdown
+# Role
+你是一個專業的 XX 助手。（← 改成你的 Agent 角色）
+
+# Capabilities
+你可以使用以下工具協助用戶：
+- 說明你新增的工具用途，讓 Agent 知道何時該用它
+```
+
+> `system.md` 決定了 Agent 的「性格與行為準則」，工具與指令要相互配合，Agent 才會在對的時機呼叫工具。
+
+### 5-2. 在 `tools/` 資料夾新增工具函式
 
 建立新檔案，例如 `gemini_agent/tools/my_tool.py`：
 
@@ -119,13 +134,13 @@ def my_custom_tool(input: str) -> str:
 
 > **Docstring 非常重要**，它決定了 Agent 何時、為何要呼叫這個工具。
 
-### 5-2. 在 `agent.py` 中匯入並註冊工具
+### 5-3. 在 `agent.py` 中匯入並註冊工具
 
 編輯 `gemini_agent/agent.py`，加入兩行：
 
 ```python
 # 匯入你的新工具
-from tools.my_tool import my_custom_tool
+from .tools.my_tool import my_custom_tool
 
 # 加入 tools 清單
 root_agent = Agent(
