@@ -20,14 +20,21 @@
 git clone https://github.com/LiuYuWei/google-adk-agent-template.git
 cd google-adk-agent-template
 
-# 一鍵建立虛擬環境 + 安裝套件 + 初始化 .env 範本
-make setup
+# 建立 Python 虛擬環境
+make venv
 
 # 啟動虛擬環境
 source .venv/bin/activate
+
+# 安裝所需套件
+make install
 ```
 
-> `make setup` 會自動執行：建立 `.venv`、安裝 `requirements.txt`、複製 `.env.template` 為 `.env`。
+> 若想一步完成（建立虛擬環境 + 安裝套件 + 初始化 `.env` 範本），可改用：
+> ```bash
+> make setup
+> source .venv/bin/activate
+> ```
 
 ---
 
