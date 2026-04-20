@@ -1,8 +1,9 @@
-.PHONY: venv install setup init-env run clean docker-build docker-run
+.PHONY: venv install setup init-env run clean docker-build docker-run deploy
 
 # 專案設定
 IMAGE_NAME = google-adk-agent-template
 PORT = 8000
+REGION = us-central1
 
 # 建立虛擬環境
 venv:
@@ -39,6 +40,20 @@ docker-build: init-env
 
 docker-run:
 	docker run -p $(PORT):$(PORT) --env-file gemini_agent/.env $(IMAGE_NAME)
+
+# 部署 Gemini Agent 至 Google Cloud Run
+deploy:
+	@if [ -z "$(PROJECT)" ]; then \
+		echo "請指定 GCP 專案 ID，例如：make deploy PROJECT=your-project-id"; \
+		exit 1; \
+	fi
+	adk deploy cloud_run \
+		--project=$(PROJECT) \
+		--region=$(REGION) \
+		--service_name=$(IMAGE_NAME) \
+		--port=$(PORT) \
+		--with_ui \
+		gemini_agent
 
 # 清理快取檔案
 clean:

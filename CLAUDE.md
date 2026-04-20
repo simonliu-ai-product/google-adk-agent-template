@@ -37,8 +37,18 @@
 2. **分析與開發**：
    - 根據指令分析該改動哪個檔案。
    - 所有代碼變動後，請檢查 `agent.py` 的匯入路徑是否正確。
-3. **完成與測試**：
-   - 修改完成後，主動告知使用者執行 `make run`。
+3. **新增工具 (Tools) 的標準流程**：
+   - **Step A**：在 `<agent_dir>/tools/` 新增 Python 函式，並撰寫完整的繁體中文 Docstring（Docstring 決定 Agent 何時呼叫此工具）。
+   - **Step B**：在 `<agent_dir>/agent.py` 的頂部 import 新工具，並加入 `tools=[...]` 清單。
+   - 每次修改後提醒使用者執行 `make run` 進行測試。
+4. **部署至 Google Cloud Run**：
+   - 使用 `adk deploy cloud_run` 指令（ADK CLI 內建）進行部署，**不需要手動撰寫 Dockerfile 或 gcloud 指令**。
+   - 標準部署指令：`make deploy PROJECT=<gcp-project-id>`
+   - 此指令會自動打包 `gemini_agent/` 並部署至 Cloud Run，同時啟用 Web UI（`--with_ui`）。
+   - 部署前確認使用者已執行：`gcloud auth login` 與 `gcloud auth application-default login`。
+5. **完成與測試**：
+   - 本機測試：執行 `make run`，開啟 `http://localhost:8000`。
+   - 雲端測試：執行 `make deploy PROJECT=xxx`，部署完成後使用輸出的 Service URL 存取。
 
 ---
 

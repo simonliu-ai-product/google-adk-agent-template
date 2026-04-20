@@ -21,7 +21,7 @@
 | :--- | :--- | :--- |
 | **「修改 AI 的性格或指令」** | `<agent_dir>/instruction/system.md` | 調整 AI 的角色定義與規範。 |
 | **「增加或修改功能工具 (Tools)」** | `<agent_dir>/tools/sample_tool.py` | 撰寫 Python 邏輯並提供繁體中文 Docstring。 |
-| **「更換模型版本」** | `<agent_dir>/models/default.py` | 更新模型字串（如 `gemini-2.0-flash`）。 |
+| **「更換模型版本」** | `<agent_dir>/models/default.py` | 更新模型字串（如 `gemini-2.5-flash`）。 |
 | **「註冊或管理工具清單」** | `<agent_dir>/agent.py` | 在 `tools=[...]` 中增減匯入的函式。 |
 | **「設定金鑰 (API Key) 或環境參數」** | `<agent_dir>/.env` | **填寫或修正金鑰、專案 ID 等設定。** |
 
@@ -35,9 +35,19 @@
    - 當使用者提到「準備環境」或「第一次啟動」時，**執行 `make setup`**。
    - **接著，主動協助使用者修改 `<agent_dir>/.env` 檔案**，填入對應的 API Key、Google Cloud 專案 ID 或時區等必要參數。
 2. **目錄探索**：不確定目標時，先執行 `ls -d */` 查看現有的 Agent 資料夾。
-3. **代碼實作**：
+3. **新增工具 (Tools) 的標準流程**：
+   - **Step A**：在 `<agent_dir>/tools/` 新增 Python 函式，並撰寫完整的繁體中文 Docstring（Docstring 決定 Agent 何時呼叫此工具）。
+   - **Step B**：在 `<agent_dir>/agent.py` 的頂部 import 新工具，並加入 `tools=[...]` 清單。
+   - 每次修改後提醒使用者執行 `make run` 進行測試。
+4. **部署至 Google Cloud Run**：
+   - 使用 `adk deploy cloud_run` 指令（ADK CLI 內建）進行部署，**不需要手動撰寫 Dockerfile 或 gcloud 指令**。
+   - 標準部署指令：`make deploy PROJECT=<gcp-project-id>`
+   - 此指令會自動打包 `gemini_agent/` 並部署至 Cloud Run，同時啟用 Web UI（`--with_ui`）。
+   - 部署前確認使用者已執行：`gcloud auth login` 與 `gcloud auth application-default login`。
+5. **代碼實作規範**：
    - 務必在 Python 檔案中加入**繁體中文註解**。
-   - 修改完成後，主動告知使用者可執行 `make run` 測試成果。
+   - 本機測試：執行 `make run`，開啟 `http://localhost:8000`。
+   - 雲端測試：執行 `make deploy PROJECT=xxx`，部署完成後使用輸出的 Service URL 存取。
 
 ---
 
