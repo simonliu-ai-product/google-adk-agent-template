@@ -1,4 +1,4 @@
-.PHONY: venv install setup init-env run clean docker-build docker-run deploy
+.PHONY: venv install setup init-env auth run clean docker-build docker-run deploy
 
 # 專案設定
 IMAGE_NAME = google-adk-agent-template
@@ -29,6 +29,16 @@ init-env:
 setup: venv init-env
 	. .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 	@echo "初始化完成。現在您可以執行 'make run' 啟動 Agent。"
+
+# Google Cloud 登入與專案設定
+auth:
+	@if [ -z "$(PROJECT)" ]; then \
+		echo "請指定 GCP 專案 ID，例如：make auth PROJECT=your-project-id"; \
+		exit 1; \
+	fi
+	gcloud auth login
+	gcloud auth application-default login
+	gcloud config set project $(PROJECT)
 
 # 啟動 Agent
 run:

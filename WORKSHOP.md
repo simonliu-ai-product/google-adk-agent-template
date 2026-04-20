@@ -75,10 +75,10 @@ GEMINI_MODEL=gemini-2.5-flash
 確認 gcloud 已登入並設定好預設專案：
 
 ```bash
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project your-project-id
+make auth PROJECT=your-project-id
 ```
+
+> `make auth` 會依序執行：`gcloud auth login`、`gcloud auth application-default login`、`gcloud config set project`。
 
 ---
 
