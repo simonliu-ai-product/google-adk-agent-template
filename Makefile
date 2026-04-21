@@ -3,7 +3,7 @@
 # 專案設定
 IMAGE_NAME = google-adk-agent-template
 PORT = 8000
-REGION = us-central1
+REGION = global
 
 # 建立虛擬環境
 venv:

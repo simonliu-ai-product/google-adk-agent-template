@@ -49,7 +49,7 @@ source .venv/bin/activate
 # Vertex AI Configuration
 GOOGLE_GENAI_USE_VERTEXAI=1
 GOOGLE_CLOUD_PROJECT=your-project-id       # 確認此處為您的 GCP 專案 ID
-GOOGLE_CLOUD_LOCATION=us-central1
+GOOGLE_CLOUD_LOCATION=global
 
 # Gemini Model Name
 GEMINI_MODEL=gemini-2.5-flash

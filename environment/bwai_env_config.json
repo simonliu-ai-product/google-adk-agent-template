@@ -8,7 +8,7 @@
       "description": "Step 1：設定 Gemini CLI Vertex AI 認證",
       "params": {
         "persist_to": "~/.gemini/.env",
-        "location_default": "us-central1",
+        "location_default": "global",
         "check_conflicting_keys": true
       }
     },

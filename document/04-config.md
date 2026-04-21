@@ -17,7 +17,7 @@ duration: 5
 # Vertex AI Configuration
 GOOGLE_GENAI_USE_VERTEXAI=1
 GOOGLE_CLOUD_PROJECT=<您的 GCP 專案 ID>
-GOOGLE_CLOUD_LOCATION=us-central1
+GOOGLE_CLOUD_LOCATION=global
 
 # Gemini Model Name
 GEMINI_MODEL=gemini-2.5-flash
