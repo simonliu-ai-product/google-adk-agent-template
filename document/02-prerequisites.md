@@ -1,54 +1,60 @@
 ---
-title: 環境準備
-duration: 10
+title: 環境準備與初始化
+duration: 15
 ---
 
-# 2. 環境準備
+# 2. 環境準備與初始化
 
-本工作坊強烈建議使用 **Google Cloud Console (Cloud Shell)** 進行。Cloud Shell 是一個預裝了所有必要工具（包括 `gcloud`、`python`、`pip`、`git`）的雲端開發環境，且完全免費。
+本工作坊強烈建議使用 **Google Cloud Console (Cloud Shell)** 進行。
 
 ### 必備條件
 1.  **Google Cloud 帳號**: 您需要一個具備帳單帳戶的 GCP 專案。
-2.  **啟用 Cloud Shell**: 登入 [Google Cloud Console](https://console.cloud.google.com/) 並點擊右上角的「啟用 Cloud Shell」按鈕。
+2.  **啟用 Cloud Shell**: 登入 [Google Cloud Console](https://console.cloud.google.com/) 並點擊右上角的「啟用 Cloud Shell」。
 
-### 複製專案
+### 複製專案與安裝工具
 在 Cloud Shell 終端機中，執行以下指令：
 
 ```bash
+# 複製專案
 git clone https://github.com/LiuYuWei/google-adk-agent-template.git
 cd google-adk-agent-template
-```
 
-### 安裝自動化工具
-為了簡化環境設定流程，我們將使用 `bwai-workshop-tools` 自動化工具：
-
-```bash
+# 安裝自動化設定工具
 pip install bwai-workshop-tools
 ```
 
 ---
 
-### 使用 Gemini CLI 進行工作坊
+### 執行自動化初始化 (Setup)
 
-**Gemini CLI** 是一個強大的終端機 AI 助手，可以協助您理解程式碼、生成測試、甚至自動化執行工作坊步驟。在 Cloud Shell 中已經預裝此工具。
+我們將使用 `bwai-workshop-tools` 來處理繁瑣的認證、API 啟用與環境建立：
 
-#### 啟動 Gemini CLI
-在終端機輸入以下指令啟動：
 ```bash
-gemini
+bwai-workshop setup --step environment/bwai_env_config.json
 ```
 
-#### 實戰用法：自動化協助
-您可以要求 Gemini CLI 協助您完成後續步驟：
+執行過程中，系統會引導您完成 **GCP 登入**、**專案選取** 與 **Gemini CLI 認證**。
 
-**範例指令：**
+### 驗證與啟動環境
+設定完成後，請執行驗證確保一切就緒，並手動啟動虛擬環境：
+
 ```bash
-# 讓 Gemini 幫您解釋專案結構
-gemini "請閱讀專案中的關鍵檔案，並向我解釋這個 ADK 專案是如何運作的"
+# 驗證設定
+bwai-workshop verify --step environment/bwai_env_config.json
 
-# 讓 Gemini 協助執行後續的 setup 指令
-gemini "幫我執行 bwai-workshop setup 並使用 environment/bwai_env_config.json 設定檔"
+# 啟動虛擬環境
+source .venv/bin/activate
+```
+
+---
+
+### 使用 Gemini CLI 協助
+
+您也可以隨時啟動 **Gemini CLI**，要求它解釋專案結構或協助開發工具：
+
+```bash
+gemini "請向我解釋這個 ADK 專案的運作方式"
 ```
 
 > [!TIP]
-> 配合 `bwai-workshop-tools` 與 `Gemini CLI` 使用，可以極大地提升您的開發效率並減少出錯機會！
+> 確保已執行 `source .venv/bin/activate`，否則後續指令可能會因為找不到套件而失敗。

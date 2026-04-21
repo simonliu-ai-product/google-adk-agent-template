@@ -3,7 +3,7 @@ title: 部署至 Cloud Run
 duration: 5
 ---
 
-# 7. 部署至 Cloud Run
+# 6. 部署至 Cloud Run
 
 環境驗證與測試完成後，您可以將 AI 代理正式部署到雲端。
 
