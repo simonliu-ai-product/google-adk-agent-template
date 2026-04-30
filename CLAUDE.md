@@ -21,8 +21,9 @@
 | :--- | :--- | :--- |
 | **「修改角色指令、行為或性格」** | `<agent_dir>/instruction/system.md` | 調整核心提示詞 (Prompt)。 |
 | **「開發或改動 Python 工具 (Tools)」** | `<agent_dir>/tools/sample_tool.py` | 撰寫函式邏輯並提供繁體中文註解。 |
+| **「新增/修改 Skills（情境技能包）」** | `<agent_dir>/skills/<skill-name>/` | 撰寫 `SKILL.md` 與 `references/`，依 Agent Skill 規範組織。 |
 | **「調整模型版本或供應商」** | `<agent_dir>/models/default.py` | 更新模型初始化設定。 |
-| **「註冊工具至 Agent 的實例中」** | `<agent_dir>/agent.py` | 管理 `tools` 列表參數中的內容。 |
+| **「註冊工具至 Agent 的實例中」** | `<agent_dir>/agent.py` | 管理 `SkillToolset` 中的 `skills` 與 `additional_tools`。 |
 | **「設定金鑰 (API Key) 或環境參數」** | `<agent_dir>/.env` | **填寫或修改金鑰、專案 ID 等設定。** |
 
 ---
@@ -39,14 +40,19 @@
    - 所有代碼變動後，請檢查 `agent.py` 的匯入路徑是否正確。
 3. **新增工具 (Tools) 的標準流程**：
    - **Step A**：在 `<agent_dir>/tools/` 新增 Python 函式，並撰寫完整的繁體中文 Docstring（Docstring 決定 Agent 何時呼叫此工具）。
-   - **Step B**：在 `<agent_dir>/agent.py` 的頂部 import 新工具，並加入 `tools=[...]` 清單。
+   - **Step B**：在 `<agent_dir>/agent.py` 的頂部 import 新工具，並加入 `Agent(tools=[...])` 清單與 SkillToolset 並列（這樣工具會永遠暴露給 LLM）。
    - 每次修改後提醒使用者執行 `make run` 進行測試。
-4. **部署至 Google Cloud Run**：
+4. **新增 Skills (情境技能包) 的標準流程**：
+   - **Step A**：在 `<agent_dir>/skills/<skill-name>/` 建立資料夾。
+   - **Step B**：撰寫必要檔案 `SKILL.md`（frontmatter 內含 `name` 與 `description` — Agent 會以此判斷何時觸發 Skill），並視需要新增 `references/`、`assets/`、`scripts/` 子資料夾。
+   - **Step C**：`agent.py` 中的 `load_all_skills()` 會自動掃描 `skills/` 下的子資料夾，**不需要手動註冊**；只要 `SKILL.md` 存在即可生效。
+   - 每次修改後提醒使用者執行 `make run` 進行測試。
+5. **部署至 Google Cloud Run**：
    - 使用 `adk deploy cloud_run` 指令（ADK CLI 內建）進行部署，**不需要手動撰寫 Dockerfile 或 gcloud 指令**。
    - 標準部署指令：`make deploy PROJECT=<gcp-project-id>`
    - 此指令會自動打包 `gemini_agent/` 並部署至 Cloud Run，同時啟用 Web UI（`--with_ui`）。
    - 部署前確認使用者已執行：`gcloud auth login` 與 `gcloud auth application-default login`。
-5. **完成與測試**：
+6. **完成與測試**：
    - 本機測試：執行 `make run`，開啟 `http://localhost:8000`。
    - 雲端測試：執行 `make deploy PROJECT=xxx`，部署完成後使用輸出的 Service URL 存取。
 

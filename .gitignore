@@ -12,3 +12,7 @@ venv.bak/
 .idea/
 .DS_Store
 *.log
+
+# ADK 本地 session / artifact 暫存
+.adk/
+**/.adk/
